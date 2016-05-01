@@ -35,7 +35,8 @@ namespace ScumLib
                 if (files.Length >= MaxBackups)
                 {
                     // Delete the oldest
-                    GetOldestBackup().Delete();
+                    var min = files.Min(info => info.CreationTime);
+                    return files.Where(info => info.CreationTime == min).First();
                 }
 
                 var backup = SaveFile.CopyTo(GetBackupFileInfo(AUTO_PREFIX + destFileName).FullName, true);
@@ -67,13 +68,6 @@ namespace ScumLib
         {
             var files = GetBackupFiles();
             return files.Where(info => !info.Name.StartsWith(AUTO_PREFIX)).ToArray();
-        }
-
-        public FileInfo GetOldestBackup()
-        {
-            var files = GetBackupFiles();
-            var min = files.Min(info => info.CreationTime);
-            return files.Where(info => info.CreationTime == min).First();
         }
 
         public FileInfo GetLatestBackup()
