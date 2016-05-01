@@ -36,7 +36,7 @@ namespace ScumLib
                 {
                     // Delete the oldest
                     var min = files.Min(info => info.CreationTime);
-                    return files.Where(info => info.CreationTime == min).First();
+                    files.Where(info => info.CreationTime == min).First().Delete();
                 }
 
                 var backup = SaveFile.CopyTo(GetBackupFileInfo(AUTO_PREFIX + destFileName).FullName, true);
